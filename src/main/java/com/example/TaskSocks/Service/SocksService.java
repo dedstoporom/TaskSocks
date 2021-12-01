@@ -4,13 +4,13 @@ import com.example.TaskSocks.Model.Socks;
 import com.example.TaskSocks.Repository.SocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class SocksService {
-
  @Autowired
     SocksRepository socksRepository;
-
+ @Transactional
     public int result(String color,int cottonPart,String operation) throws ErrorOperationExeption {
         switch(operation) {
             case "moreThan": return socksRepository.findMoreSocks(color,cottonPart);
@@ -19,7 +19,7 @@ public class SocksService {
             default: throw new ErrorOperationExeption("Bad Request");
         }
     }
-
+    @Transactional
     public Socks add(Socks socks) throws ErrorOperationExeption {
         if (socks.getQuantity()>0) {
             Socks foundSocks=socksRepository.findSocks(socks.getColor(),socks.getCotton_part());
@@ -36,6 +36,7 @@ public class SocksService {
         else
             throw new ErrorOperationExeption("Bad Request");
     }
+    @Transactional
     public Socks remove(Socks socks) throws ErrorOperationExeption {
         if (socks.getQuantity()>0) {
             Socks foundSocks=socksRepository.findSocks(socks.getColor(),socks.getCotton_part());
